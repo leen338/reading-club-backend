@@ -13,6 +13,7 @@ router.post("/",auth,async(req,res)=>{
             sender:req.user
         })
         await message.save()
+        req.app.get("io").emit("receiveMessage",message)
         res.status(201).json(message)
     }catch(err){
         console.error(err.message)

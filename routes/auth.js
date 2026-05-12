@@ -3,7 +3,7 @@ const router=express.Router()
 const bcrypt=require("bcryptjs")
 const jwt=require("jsonwebtoken")
 const User=require("../models/User")
-const console = require("node:console")
+// const console = require("node:console")
 
 // post / api / register
 router.post("/register",async(req,res)=>{
@@ -65,9 +65,11 @@ router.post("/login",async(req,res)=>{
     }catch(err){
         console.error(err.message)
         res.status(500).send("server error")
+        
     }
 
 })
 
 
 module.exports=router
+

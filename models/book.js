@@ -27,6 +27,12 @@ const bookSchema=new mongoose.Schema({
         type:Number,
         default: 0
     },
+    summary:{
+        type:String
+    },
+    description:{
+        type:String
+    },
     isPaid:{
         type:Boolean,
         default:false
@@ -44,3 +50,5 @@ const bookSchema=new mongoose.Schema({
 
 const Book=mongoose.model("Book",bookSchema)
 module.exports=Book
+
+

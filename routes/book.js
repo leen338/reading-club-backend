@@ -8,7 +8,7 @@ const sendEmail=require("../utils/sendEmail")
 //post/api/books
 router.post("/",auth,async(req,res)=>{
     try{
-        const{title,author,category,pdf,cover,audio,price,isPaid}=req.body
+        const{title,author,category,pdf,cover,audio,price,summary,description,isPaid}=req.body
         const newBook=new Book({
             title,
             author,
@@ -17,8 +17,10 @@ router.post("/",auth,async(req,res)=>{
             cover,
             audio,
             price,
+            summary,
+            description,
             isPaid,
-            addedBy:req.user
+            addedBy:req.user.id
         })
         await newBook.save()
         res.status(201).json(newBook)
@@ -52,7 +54,7 @@ router.get("/:id",auth,async(req,res)=>{
 //put/api/book
 router.put("/:id",auth,async(req,res)=>{
     try{
-        const {title,author,category,pdf,cover,audio,price,isPaid}=req.body
+        const {title,author,category,pdf,cover,audio,price,summary,description,isPaid}=req.body
 
         let book=await Book.findById(req.params.id)
         if(!book){
@@ -73,6 +75,8 @@ router.put("/:id",auth,async(req,res)=>{
         if(cover) book.cover=cover
         if(audio) book.audio=audio
         if(price!==undefined) book.price=price
+        if(summary) book.summary=summary
+        if(description) book.description=description
         if(isPaid!==undefined) book.isPaid=isPaid
 
         await book.save()
@@ -130,7 +134,7 @@ router.post("/buy/:id",auth,async(req,res)=>{
 
         if(book.isPaid){
             return res.status(400).json({
-                msg:"this book is token"
+                msg:"this book is taken"
             })
         }
 
