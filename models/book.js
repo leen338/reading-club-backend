@@ -1,5 +1,6 @@
 const mongoose=require("mongoose")
 
+
 const bookSchema=new mongoose.Schema({
     title:{
         type:String,
@@ -41,6 +42,23 @@ const bookSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
+    rating:{
+        type:Number,
+        default:0
+    },
+    comments:[
+        {
+            userId:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"User"
+            },
+            text:String,
+            createdAt:{
+                type:Date,
+                default:Date.now
+            }
+        }
+    ],
     createdAt:{
         type:Date,
         default:Date.now

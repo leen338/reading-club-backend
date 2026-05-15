@@ -117,7 +117,7 @@ router.delete("/:id",auth,async(req,res)=>{
 
 
 //post/api//buy
-router.post("/buy/:id",auth,async(req,res)=>{
+router.post("/buy/:id",async(req,res)=>{
     try{
         const book=await Book.findById(req.params.id)
 
@@ -156,6 +156,52 @@ router.post("/buy/:id",auth,async(req,res)=>{
         })
     }
 })
+
+router.post("/:id/comment",auth, async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).json({ msg: "Book not found" });
+    }
+
+    book.comments.push({
+      userId: req.user.id,
+      text: req.body.text
+    });
+
+    await book.save();
+
+    res.json({
+        msg:"comment added",
+        comments:book.comments
+    });
+  } catch (err) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
+router.post("/:id/rate", auth, async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).json({ msg: "Book not found" });
+    }
+
+    book.rating = req.body.rating;
+
+    await book.save();
+
+    res.json({
+      msg: "rating updated",
+      rating: book.rating
+    });
+
+  } catch (err) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
 
 
 module.exports=router
