@@ -203,5 +203,29 @@ router.post("/:id/rate", auth, async (req, res) => {
   }
 });
 
+router.get("/:id/comments",async(req,res)=>{
+    try{
+        const book=await Book.findById(req.params.id).populate("comments.userId","name")
+        res.json(book.comments)
+    }catch(err){
+        res.status(500).json({
+            msg:"server error"
+        })
+    }
+})
+
+router.get("/:id/rating",async(req,res)=>{
+    try{
+        const book=await Book.findById(req.params.id)
+        res.json({
+            rating:book.rating
+        })
+    }catch(err){
+        res.status(500).json({
+            msg:"server error"
+        })
+    }
+})
+
 
 module.exports=router
